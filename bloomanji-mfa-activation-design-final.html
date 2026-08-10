@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activer la double authentification — Bloomanji</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0C447C;
+    --blue:#378ADD;
+    --blue-light:#85B7EB;
+    --blue-accent:#185FA5;
+    --text:#1c2b3a;
+    --muted:#6b7c90;
+    --line:#e6ecf3;
+    --bg:#eef3f9;
+    --white:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:
+      radial-gradient(90% 60% at 50% -10%, #e2ecf8 0%, transparent 60%),
+      var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    padding:40px 20px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .card{
+    width:100%;max-width:440px;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:44px 40px 38px;
+    box-shadow:0 20px 50px -24px rgba(12,68,124,.28), 0 2px 8px rgba(12,68,124,.04);
+  }
+
+  .logo{display:flex;flex-direction:column;align-items:center;gap:9px;margin-bottom:24px;}
+  .logo .symbol{width:40px;height:40px;animation:bloom 1s cubic-bezier(.2,.8,.2,1) both;}
+  .logo .wordmark{font-family:'Inter',sans-serif;font-size:22px;font-weight:500;letter-spacing:-0.5px;color:var(--navy);}
+  @keyframes bloom{from{opacity:0;transform:scale(.5) rotate(-20deg);}to{opacity:1;transform:scale(1) rotate(0);}}
+
+  .head{text-align:center;margin-bottom:26px;}
+  .head h1{font-family:'Fraunces',serif;font-weight:600;font-size:23px;color:var(--navy);margin-bottom:8px;}
+  .head p{font-size:13.5px;color:var(--muted);line-height:1.55;}
+
+  /* Étapes */
+  .step{margin-bottom:22px;}
+  .step-title{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .step-num{
+    width:24px;height:24px;flex-shrink:0;
+    border-radius:50%;background:var(--blue);
+    color:#fff;font-size:13px;font-weight:600;
+    display:grid;place-items:center;
+  }
+  .step-title h2{font-size:14.5px;font-weight:600;color:var(--text);}
+
+  /* QR */
+  .qr-wrap{
+    display:flex;justify-content:center;
+    padding:16px;margin-bottom:12px;
+  }
+  .qr{
+    width:168px;height:168px;
+    border:1px solid var(--line);border-radius:14px;
+    padding:12px;background:#fff;
+    box-shadow:0 4px 14px rgba(12,68,124,.06);
+  }
+  .qr svg{width:100%;height:100%;display:block;}
+
+  /* Clé manuelle */
+  .manual{
+    text-align:center;font-size:12.5px;color:var(--muted);margin-bottom:4px;
+  }
+  .secret{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    margin-top:8px;
+  }
+  .secret code{
+    font-family:'Fraunces',serif;font-size:15px;letter-spacing:2px;
+    color:var(--navy);background:#f2f6fb;
+    padding:8px 14px;border-radius:9px;border:1px solid var(--line);
+  }
+  .copy-btn{
+    background:none;border:1px solid var(--line);border-radius:9px;
+    padding:8px 10px;cursor:pointer;color:var(--blue-accent);
+    display:grid;place-items:center;transition:border-color .18s, background .18s;
+  }
+  .copy-btn:hover{border-color:var(--blue-light);background:#f6faff;}
+  .copy-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;}
+
+  /* Champ code */
+  .otp{display:flex;justify-content:center;gap:8px;margin:4px 0;}
+  .otp input{
+    width:44px;height:52px;text-align:center;
+    font-family:'Fraunces',serif;font-size:22px;font-weight:500;color:var(--navy);
+    border:1.5px solid var(--line);border-radius:11px;background:var(--white);
+    transition:border-color .18s, box-shadow .18s;
+  }
+  .otp input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(55,138,221,.12);}
+  .otp input.filled{border-color:var(--blue-light);}
+
+  .submit{
+    width:100%;padding:13px 16px;margin-top:20px;
+    border:none;border-radius:11px;
+    background:linear-gradient(180deg,#4795e4 0%,var(--blue) 100%);
+    color:#fff;font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;
+    box-shadow:0 6px 16px rgba(55,138,221,.32);
+    transition:transform .06s, filter .18s, box-shadow .18s;
+  }
+  .submit:hover{filter:brightness(1.05);box-shadow:0 8px 20px rgba(55,138,221,.4);}
+  .submit:active{transform:translateY(1px);}
+
+  .skip{text-align:center;margin-top:16px;font-size:13px;}
+  .skip a{color:var(--muted);text-decoration:none;font-weight:500;}
+  .skip a:hover{text-decoration:underline;color:var(--text);}
+
+  @media (max-width:440px){
+    .card{padding:36px 22px 30px;border-radius:18px;}
+    .otp input{width:40px;height:50px;font-size:20px;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="card">
+
+    <div class="logo">
+      <svg class="symbol" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bloomanji">
+        <g transform="translate(50,50)">
+          <path d="M0,0 C-18,-20 -11,-35 0,-40 C11,-35 18,-20 0,0" fill="#378ADD"/>
+          <path d="M0,0 C-18,-20 -11,-35 0,-40 C11,-35 18,-20 0,0" fill="#85B7EB" transform="rotate(90)"/>
+          <path d="M0,0 C-18,-20 -11,-35 0,-40 C11,-35 18,-20 0,0" fill="#378ADD" transform="rotate(180)"/>
+          <path d="M0,0 C-18,-20 -11,-35 0,-40 C11,-35 18,-20 0,0" fill="#85B7EB" transform="rotate(270)"/>
+          <circle cx="0" cy="0" r="7" fill="#185FA5"/>
+        </g>
+      </svg>
+      <span class="wordmark">bloomanji</span>
+    </div>
+
+    <div class="head">
+      <h1>Sécurisez votre compte</h1>
+      <p>Ajoutez une seconde étape de vérification avec une application comme Google Authenticator, Authy ou 1Password.</p>
+    </div>
+
+    <!-- Étape 1 : scanner -->
+    <div class="step">
+      <div class="step-title">
+        <span class="step-num">1</span>
+        <h2>Scannez ce QR code</h2>
+      </div>
+      <div class="qr-wrap">
+        <div class="qr">
+          <!-- QR décoratif (motif de démo) -->
+          <svg viewBox="0 0 29 29" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+            <rect width="29" height="29" fill="#fff"/>
+            <g fill="#0C447C">
+              <!-- coins de repérage -->
+              <path d="M0 0h7v7h-7z M1 1h5v5h-5z M2 2h3v3h-3z" fill-rule="evenodd"/>
+              <path d="M22 0h7v7h-7z M23 1h5v5h-5z M24 2h3v3h-3z" fill-rule="evenodd"/>
+              <path d="M0 22h7v7h-7z M1 23h5v5h-5z M2 24h3v3h-3z" fill-rule="evenodd"/>
+              <!-- modules aléatoires (décoratif) -->
+              <rect x="9" y="1" width="1" height="1"/><rect x="11" y="1" width="1" height="1"/><rect x="13" y="1" width="1" height="1"/><rect x="16" y="1" width="1" height="1"/><rect x="19" y="1" width="1" height="1"/>
+              <rect x="10" y="2" width="1" height="1"/><rect x="14" y="2" width="1" height="1"/><rect x="17" y="2" width="1" height="1"/><rect x="20" y="2" width="1" height="1"/>
+              <rect x="9" y="3" width="1" height="1"/><rect x="12" y="3" width="1" height="1"/><rect x="15" y="3" width="1" height="1"/><rect x="18" y="3" width="1" height="1"/>
+              <rect x="11" y="4" width="1" height="1"/><rect x="13" y="4" width="1" height="1"/><rect x="16" y="4" width="1" height="1"/><rect x="19" y="4" width="1" height="1"/>
+              <rect x="9" y="5" width="1" height="1"/><rect x="14" y="5" width="1" height="1"/><rect x="17" y="5" width="1" height="1"/><rect x="20" y="5" width="1" height="1"/>
+              <rect x="10" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/><rect x="15" y="6" width="1" height="1"/><rect x="18" y="6" width="1" height="1"/>
+              <rect x="1" y="9" width="1" height="1"/><rect x="3" y="9" width="1" height="1"/><rect x="5" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/><rect x="14" y="9" width="1" height="1"/><rect x="17" y="9" width="1" height="1"/><rect x="20" y="9" width="1" height="1"/><rect x="23" y="9" width="1" height="1"/><rect x="26" y="9" width="1" height="1"/><rect x="28" y="9" width="1" height="1"/>
+              <rect x="2" y="10" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/><rect x="9" y="10" width="1" height="1"/><rect x="13" y="10" width="1" height="1"/><rect x="16" y="10" width="1" height="1"/><rect x="19" y="10" width="1" height="1"/><rect x="24" y="10" width="1" height="1"/><rect x="27" y="10" width="1" height="1"/>
+              <rect x="1" y="11" width="1" height="1"/><rect x="4" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="12" y="11" width="1" height="1"/><rect x="15" y="11" width="1" height="1"/><rect x="18" y="11" width="1" height="1"/><rect x="22" y="11" width="1" height="1"/><rect x="25" y="11" width="1" height="1"/><rect x="28" y="11" width="1" height="1"/>
+              <rect x="3" y="12" width="1" height="1"/><rect x="6" y="12" width="1" height="1"/><rect x="10" y="12" width="1" height="1"/><rect x="14" y="12" width="1" height="1"/><rect x="17" y="12" width="1" height="1"/><rect x="21" y="12" width="1" height="1"/><rect x="24" y="12" width="1" height="1"/><rect x="26" y="12" width="1" height="1"/>
+              <rect x="2" y="13" width="1" height="1"/><rect x="5" y="13" width="1" height="1"/><rect x="9" y="13" width="1" height="1"/><rect x="13" y="13" width="1" height="1"/><rect x="16" y="13" width="1" height="1"/><rect x="20" y="13" width="1" height="1"/><rect x="23" y="13" width="1" height="1"/><rect x="27" y="13" width="1" height="1"/>
+              <rect x="1" y="14" width="1" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="8" y="14" width="1" height="1"/><rect x="11" y="14" width="1" height="1"/><rect x="15" y="14" width="1" height="1"/><rect x="19" y="14" width="1" height="1"/><rect x="22" y="14" width="1" height="1"/><rect x="25" y="14" width="1" height="1"/><rect x="28" y="14" width="1" height="1"/>
+              <rect x="3" y="15" width="1" height="1"/><rect x="7" y="15" width="1" height="1"/><rect x="10" y="15" width="1" height="1"/><rect x="14" y="15" width="1" height="1"/><rect x="18" y="15" width="1" height="1"/><rect x="21" y="15" width="1" height="1"/><rect x="24" y="15" width="1" height="1"/><rect x="26" y="15" width="1" height="1"/>
+              <rect x="2" y="16" width="1" height="1"/><rect x="6" y="16" width="1" height="1"/><rect x="9" y="16" width="1" height="1"/><rect x="13" y="16" width="1" height="1"/><rect x="17" y="16" width="1" height="1"/><rect x="20" y="16" width="1" height="1"/><rect x="23" y="16" width="1" height="1"/><rect x="27" y="16" width="1" height="1"/>
+              <rect x="9" y="22" width="1" height="1"/><rect x="12" y="22" width="1" height="1"/><rect x="15" y="22" width="1" height="1"/><rect x="18" y="22" width="1" height="1"/><rect x="21" y="22" width="1" height="1"/><rect x="24" y="22" width="1" height="1"/><rect x="27" y="22" width="1" height="1"/>
+              <rect x="10" y="23" width="1" height="1"/><rect x="14" y="23" width="1" height="1"/><rect x="17" y="23" width="1" height="1"/><rect x="22" y="23" width="1" height="1"/><rect x="26" y="23" width="1" height="1"/>
+              <rect x="9" y="24" width="1" height="1"/><rect x="13" y="24" width="1" height="1"/><rect x="16" y="24" width="1" height="1"/><rect x="20" y="24" width="1" height="1"/><rect x="25" y="24" width="1" height="1"/><rect x="28" y="24" width="1" height="1"/>
+              <rect x="11" y="25" width="1" height="1"/><rect x="15" y="25" width="1" height="1"/><rect x="19" y="25" width="1" height="1"/><rect x="23" y="25" width="1" height="1"/><rect x="27" y="25" width="1" height="1"/>
+              <rect x="10" y="26" width="1" height="1"/><rect x="14" y="26" width="1" height="1"/><rect x="18" y="26" width="1" height="1"/><rect x="21" y="26" width="1" height="1"/><rect x="24" y="26" width="1" height="1"/>
+              <rect x="9" y="27" width="1" height="1"/><rect x="13" y="27" width="1" height="1"/><rect x="16" y="27" width="1" height="1"/><rect x="20" y="27" width="1" height="1"/><rect x="26" y="27" width="1" height="1"/>
+              <rect x="12" y="28" width="1" height="1"/><rect x="15" y="28" width="1" height="1"/><rect x="19" y="28" width="1" height="1"/><rect x="23" y="28" width="1" height="1"/><rect x="27" y="28" width="1" height="1"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <p class="manual">Impossible de scanner ? Saisissez cette clé manuellement :</p>
+      <div class="secret">
+        <code>K5MW · GBPT · X4QA · Z2NC</code>
+        <button class="copy-btn" type="button" aria-label="Copier la clé" onclick="navigator.clipboard && navigator.clipboard.writeText('K5MWGBPTX4QAZ2NC')">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Étape 2 : confirmer -->
+    <div class="step">
+      <div class="step-title">
+        <span class="step-num">2</span>
+        <h2>Saisissez le code généré</h2>
+      </div>
+      <div class="otp" id="otp">
+        <input type="text" inputmode="numeric" maxlength="1" aria-label="Chiffre 1">
+        <input type="text" inputmode="numeric" maxlength="1" aria-label="Chiffre 2">
+        <input type="text" inputmode="numeric" maxlength="1" aria-label="Chiffre 3">
+        <input type="text" inputmode="numeric" maxlength="1" aria-label="Chiffre 4">
+        <input type="text" inputmode="numeric" maxlength="1" aria-label="Chiffre 5">
+        <input type="text" inputmode="numeric" maxlength="1" aria-label="Chiffre 6">
+      </div>
+    </div>
+
+    <button type="button" class="submit">Activer la double authentification</button>
+
+    <p class="skip"><a href="#">Plus tard</a></p>
+
+  </div>
+
+  <script>
+    const inputs = Array.from(document.querySelectorAll('#otp input'));
+    inputs.forEach((input, i) => {
+      input.addEventListener('input', () => {
+        input.value = input.value.replace(/[^0-9]/g, '');
+        input.classList.toggle('filled', input.value !== '');
+        if (input.value && i < inputs.length - 1) inputs[i + 1].focus();
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && i > 0) inputs[i - 1].focus();
+      });
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const digits = (e.clipboardData.getData('text') || '').replace(/[^0-9]/g, '').slice(0, 6).split('');
+        digits.forEach((d, j) => { if (inputs[j]) { inputs[j].value = d; inputs[j].classList.add('filled'); } });
+        if (digits.length) inputs[Math.min(digits.length, 5)].focus();
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="Bloomanji">
+  <g transform="translate(50,50)">
+    <path d="M0,0 C-18,-20 -11,-35 0,-40 C11,-35 18,-20 0,0" fill="#378ADD"/>
+    <path d="M0,0 C-18,-20 -11,-35 0,-40 C11,-35 18,-20 0,0" fill="#85B7EB" transform="rotate(90)"/>
+    <path d="M0,0 C-18,-20 -11,-35 0,-40 C11,-35 18,-20 0,0" fill="#378ADD" transform="rotate(180)"/>
+    <path d="M0,0 C-18,-20 -11,-35 0,-40 C11,-35 18,-20 0,0" fill="#85B7EB" transform="rotate(270)"/>
+    <circle cx="0" cy="0" r="7" fill="#185FA5"/>
+  </g>
+</svg>
