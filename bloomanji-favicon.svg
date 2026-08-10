@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Bloomanji">
-  <rect width="64" height="64" rx="14" fill="#0C447C"/>
-  <g transform="translate(32,32)">
-    <path d="M0,0 C-13,-15 -8,-26 0,-30 C8,-26 13,-15 0,0" fill="#85B7EB"/>
-    <path d="M0,0 C-13,-15 -8,-26 0,-30 C8,-26 13,-15 0,0" fill="#378ADD" transform="rotate(90)"/>
-    <path d="M0,0 C-13,-15 -8,-26 0,-30 C8,-26 13,-15 0,0" fill="#85B7EB" transform="rotate(180)"/>
-    <path d="M0,0 C-13,-15 -8,-26 0,-30 C8,-26 13,-15 0,0" fill="#378ADD" transform="rotate(270)"/>
-  </g>
-</svg>
